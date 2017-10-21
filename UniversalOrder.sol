@@ -36,6 +36,7 @@ contract UniversalOrder {
     }
 
     Rule[] public rules; // FIXME better use linked list by rule.delay
+    uint public ruleCount;
 
     function UniversalOrder () public {
         owner = msg.sender;
@@ -45,10 +46,11 @@ contract UniversalOrder {
      *  @param _delay Delay.
      *  @param _ratioRefund The ratio on the refund.
      */
-    function addRefundRule (uint _delay, uint _ratioRefund) public {
-        Rule storage rule;
-        rule.delay = _delay;
-        rule.ratioRefund = _ratioRefund;
+    function addRefundRule (uint _delay, uint _ratioRefund) public onlyAirline {
+        rules.push(Rule({
+            delay: _delay,
+            ratioRefund: _ratioRefund
+        }));
     }
 
     /** @dev Book an order.
